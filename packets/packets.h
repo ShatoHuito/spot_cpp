@@ -28,6 +28,12 @@ typedef struct __PACKED__
     uint16_t crc;
 } packet_spot_master_t;
 
+class Packet{
+public:
+    static bool read_packet(packet_device_spot_t *packet, const uint8_t *buff);
+    static bool read_packet_master_node(packet_device_spot_t *packet, const uint8_t *buff);
+    static bool send_packet_to_master(packet_device_spot_t sub_packet, uint8_t device_rssi, uint16_t address, uint16_t master_fd);
+};
 
 
 #endif //SPOT_CPP_PACKETS_H

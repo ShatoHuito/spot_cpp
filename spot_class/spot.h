@@ -13,14 +13,14 @@
 #include "../device_class/device.h"
 #include "../radio_receive/radio_receive.h"
 
-class spot{
+class Spot{
 public:
     bool            isReceivedPacket;
     radioReceive_t  buf;
     struct pollfd ufds{};
     device_info slaves[MAX_SLAVES_COUNT];
 
-    spot();
+    Spot();
 
     uint16_t get_radio_device_fd();
 

@@ -5,7 +5,7 @@
 #include "spot_class/spot.h"
 #include "radio_receive/radio_receive.h"
 
-spot spot_unit;
+Spot spot_unit;
 
 void pollin_handler(int sig)
 {

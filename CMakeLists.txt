@@ -16,4 +16,4 @@ add_executable(spot_cpp main.cpp
         test_func/test_func.cpp
         test_func/test_func.h
         crc/crc.cpp
-        crc/crc.h)
+        crc/crc.h packets/packets.cpp)
