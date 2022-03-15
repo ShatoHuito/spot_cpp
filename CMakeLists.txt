@@ -11,8 +11,8 @@ add_executable(spot_cpp main.cpp
         packets/packets.h
         main.h
         radio_receive/radio_receive.h
-        network/socket_src.cpp
-        network/socket_src.h
+        network/network.cpp
+        network/network.h
         test_func/test_func.cpp
         test_func/test_func.h
         crc/crc.cpp

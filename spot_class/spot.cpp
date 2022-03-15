@@ -8,7 +8,7 @@
 #include <unistd.h>
 #include "spot.h"
 #include "../crc/crc.h"
-#include "../network/socket_src.h"
+#include "../network/network.h"
 #include "../test_func/test_func.h"
 
 spot::spot() {
@@ -200,11 +200,11 @@ void spot::connect_to_radio_device(char *path_to_driver) {
 
 void spot::connect_to_master(uint16_t port, char *server_ip) {
     struct sockaddr_in adr = {0};
-    this->master_fd = Socket(AF_INET, SOCK_STREAM, 0);
+    this->master_fd = Network::Socket(AF_INET, SOCK_STREAM, 0);
     adr.sin_family = AF_INET;
     adr.sin_port = htons(PORT);
-    Inet_pton(AF_INET, SERVER_IP, &adr.sin_addr); //conver from text to binary
-    Connect(master_fd, (struct sockaddr *) &adr, sizeof adr);
+    Network::Inet_pton(AF_INET, SERVER_IP, &adr.sin_addr); //conver from text to binary
+    Network::Connect(master_fd, (struct sockaddr *) &adr, sizeof adr);
     this->ufds.fd = master_fd;
     this->ufds.events = POLLIN;
 }

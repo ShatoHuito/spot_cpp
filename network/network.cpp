@@ -8,9 +8,9 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
-#include "socket_src.h"
+#include "network.h"
 
-int Socket(int domain, int type, int protocol){
+int Network::Socket(int domain, int type, int protocol){
     int res = socket(domain, type, protocol);
     if (res == -1) {
         perror("socket fail");
@@ -20,7 +20,7 @@ int Socket(int domain, int type, int protocol){
 }
 
 //привязывает адресс и порт к сокету
-void Bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen){
+void Network::Bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen){
     int res = bind(sockfd, addr, addrlen);
     if (res == -1){
         perror("bind fail");
@@ -29,7 +29,7 @@ void Bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen){
 }
 
 //слушает по сокету
-void Listen(int sockfd, int backlog){
+void Network::Listen(int sockfd, int backlog){
     int res = listen(sockfd, backlog);
     if (res == -1){
         perror("listen fail");
@@ -38,7 +38,7 @@ void Listen(int sockfd, int backlog){
 }
 
 //возвращает дескриптор только что подключенного сокета
-int Accept(int sockfd, struct  sockaddr *addr, socklen_t *addrlen){
+int Network::Accept(int sockfd, struct  sockaddr *addr, socklen_t *addrlen){
     int res = accept(sockfd, addr, addrlen);
     if (res == -1){
         perror("accept fail");
@@ -47,7 +47,7 @@ int Accept(int sockfd, struct  sockaddr *addr, socklen_t *addrlen){
     return res;
 }
 
-size_t Read(int fd, void *buf, size_t count){
+size_t Network::Read(int fd, void *buf, size_t count){
     ssize_t res = read(fd, buf, count);
     if (res == -1){
         perror("read fail");
@@ -59,7 +59,7 @@ size_t Read(int fd, void *buf, size_t count){
 }
 
 //подключение к серверу
-void Connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen){
+void Network::Connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen){
     int res = connect(sockfd, addr, addrlen);
     if (res == -1){
         perror("connect fail");
@@ -67,7 +67,7 @@ void Connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen){
     }
 }
 
-void Inet_pton(int af, const char *src, void *dst){
+void Network::Inet_pton(int af, const char *src, void *dst){
     int res = inet_pton(af, src, dst);
     if (res == 0){
         printf("src does not contain a character string representing a valid network address in the specified address family\n");
