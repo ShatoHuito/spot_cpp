@@ -4,9 +4,12 @@
 
 #ifndef SPOT_CPP_RADIO_RECEIVE_H
 #define SPOT_CPP_RADIO_RECEIVE_H
+
+#include <cstdint>
+#include "../defines.h"
+
 #define __PACKED__ __attribute__((__packed__))
 
-#include "../defines.h"
 
 typedef struct {
     uint8_t est1;

@@ -1,6 +1,7 @@
 //
 // Created by ilnur on 10.03.2022.
 //
+#include <cstdio>
 #include "test_func.h"
 
 

@@ -5,13 +5,11 @@
 #ifndef SPOT_CPP_SPOT_H
 #define SPOT_CPP_SPOT_H
 
-#include <cstdint>
-#include <sys/poll.h>
-#include <fcntl.h>
-#include "../defines.h"
-#include "../packets/packets.h"
+#include "../spot_class/spot.h"
 #include "../device_class/device.h"
+#include <sys/poll.h>
 #include "../radio_receive/radio_receive.h"
+
 
 class Spot{
 public:
@@ -28,13 +26,8 @@ public:
     void connect_to_master(uint16_t port, char *server_ip);
 
     void start_message_exchande();
-
-    bool read_packet(packet_device_spot_t *packet, const uint8_t *buff);
-    bool read_packet_master_node(packet_device_spot_t *packet, const uint8_t *buff);
-    bool send_packet_to_master(packet_device_spot_t sub_packet, uint8_t device_rssi, uint16_t master_fd);
     packet_device_spot_t *get_answer_from_queue(packet_device_spot_t *rcv_packet);
     bool prepare_answer_spot_node(uint8_t *byte_arr_master_node, packet_device_spot_t *packet_tx);
-
     bool handle_rx_packet(packet_device_spot_t *rcv_packet);
     bool handle_init_packet(packet_device_spot_t *rcv_packet);
 

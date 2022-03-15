@@ -7,6 +7,10 @@
 
 
 #include <sys/socket.h>
+#include <cstdio>
+#include <cstdlib>
+#include <unistd.h>
+#include <arpa/inet.h>
 
 class Network{
 public:

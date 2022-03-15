@@ -1,9 +1,9 @@
-#include "main.h"
-#include "defines.h"
-#include "device_class/device.h"
-#include "packets/packets.h"
+#include <csignal>
+#include <cstring>
+#include <unistd.h>
 #include "spot_class/spot.h"
 #include "radio_receive/radio_receive.h"
+#include "defines.h"
 
 Spot spot_unit;
 

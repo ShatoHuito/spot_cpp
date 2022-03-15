@@ -2,10 +2,12 @@
 // Created by ilnur on 15.03.2022.
 //
 
+#include <cstdint>
 #include <cstring>
 #include <sys/socket.h>
 #include "packets.h"
 #include "../crc/crc.h"
+#include "../device_class/device.h"
 
 bool Packet::read_packet(packet_device_spot_t *packet, const uint8_t *buff) {
     packet->length = buff[0];
@@ -55,4 +57,40 @@ bool Packet::send_packet_to_master(packet_device_spot_t sub_packet, uint8_t devi
     //  print_paket(byte_arr, "SPOT SEND TO MASTER");
     send(master_fd, byte_arr, sizeof(packet_spot_master_t), 0);
     return false;
+}
+
+/**
+ * Функция обрабатывает запрос в рамках открытого сеанса, кладет в очередь пакет-ответ для узла
+ * @param spotDeviceInfo структура с данными спота и очередями готовых пакетов для узлов
+ * @param rcv_packet адрес полученного пакета запроса
+ * @return всегда возвращает 0, проверок никаких здесь не проводится
+ */
+
+bool Packet::handle_rx_packet(packet_device_spot_t *rcv_packet, Spot *spot)
+{
+    packet_device_spot_t	*packet_to_update;
+    device_info	*device = nullptr;
+    uint8_t		i = 0;
+
+    while (i < MAX_SLAVES_COUNT && spot->slaves[i].address)
+    {
+        if (spot->slaves[i].address == rcv_packet->address)
+        {
+            device = &spot->slaves[i];
+            break;
+        }
+        i++;
+    }
+    if (device)
+    {
+        packet_to_update = &(device->queue[rcv_packet->counter].packet);
+        packet_to_update->counter = rcv_packet->counter;
+        packet_to_update->address = rcv_packet->address;
+        packet_to_update->length = sizeof(packet_device_spot_t) - 1;
+        packet_to_update->info = rcv_packet->info;
+        // для исходящего пакета контрольная сумма инвертирована
+        packet_to_update->crc = 0;
+        packet_to_update->crc = ~(dallasCrc16((uint8_t *) packet_to_update, (packet_to_update->length - 1)));
+    }
+    return (false);
 }

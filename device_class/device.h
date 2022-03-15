@@ -5,9 +5,13 @@
 #ifndef SPOT_CPP_DEVICE_H
 #define SPOT_CPP_DEVICE_H
 
-#include "../defines.h"
+#include "../spot_class/spot.h"
 #include "../packets/packets.h"
 #include <cstdint>
+
+#include "../defines.h"
+#include "../packets/packet_struct.h"
+
 
 enum flag_e
 {

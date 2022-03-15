@@ -5,8 +5,8 @@
 #ifndef SPOT_CPP_CRC_H
 #define SPOT_CPP_CRC_H
 
-#include "../packets/packets.h"
 #include <cstdint>
+#include "../packets/packets.h"
 
 uint16_t dallasCrc16(uint8_t *data, uint8_t size);
 

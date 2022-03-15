@@ -2,12 +2,7 @@
 // Created by ilnur on 10.03.2022.
 //
 
-#include <iostream>
-#include <cstdio>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
+
 #include "network.h"
 
 int Network::Socket(int domain, int type, int protocol){
