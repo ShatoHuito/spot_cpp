@@ -4,8 +4,6 @@
 #include "packets/packets.h"
 #include "spot_class/spot.h"
 #include "radio_receive/radio_receive.h"
-#include "network/connect_to_master.h"
-#include "message_exchange/message_exchange.h"
 
 spot spot_unit;
 
