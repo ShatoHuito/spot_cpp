@@ -94,3 +94,39 @@ bool Packet::handle_rx_packet(packet_device_spot_t *rcv_packet, Spot *spot)
     }
     return (false);
 }
+
+/**
+ * Функция обрабатывает инициализационный запрос (начало сеанса), кладет в очередь пакет-ответ для узла
+ * @param spotDeviceInfo структура с данными спота и очередями готовых пакетов для узлов
+ * @param rcv_packet адрес полученного пакета запроса
+ * @return всегда возвращает 0, проверок никаких здесь не проводится
+ */
+
+bool Packet::handle_init_packet(packet_device_spot_t *rcv_packet, Spot *spot)
+{
+    packet_device_spot_t	*packet_to_update;
+    device_info	*device = nullptr;
+    uint8_t		i = 0;
+    uint32_t	counter;
+
+    while (i < MAX_SLAVES_COUNT && \
+        spot->slaves[i].address && \
+		spot->slaves[i].address != rcv_packet->address)
+        i++;
+    if (i < MAX_SLAVES_COUNT)
+    {
+        device = &spot->slaves[i];
+        device->address = rcv_packet->address;
+        counter = RANDOM_COUNTER;
+        device->counter = counter;
+        packet_to_update = &(device->queue[counter % 3].packet);
+        packet_to_update->counter = rcv_packet->counter;
+        packet_to_update->address = rcv_packet->address;
+        packet_to_update->length = sizeof(packet_device_spot_t) - 1;
+        packet_to_update->info = counter;
+        packet_to_update->crc = 0;
+        // для исходящего пакета контрольная сумма инвертирована
+        packet_to_update->crc = ~(dallasCrc16((uint8_t *) packet_to_update, (packet_to_update->length - 1)));
+    }
+    return (false);
+}

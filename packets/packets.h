@@ -17,6 +17,7 @@ public:
     static bool read_packet_master_node(packet_device_spot_t *packet, const uint8_t *buff);
     static bool send_packet_to_master(packet_device_spot_t sub_packet, uint8_t device_rssi, uint16_t address, uint16_t master_fd);
     static bool handle_rx_packet(packet_device_spot_t *rcv_packet, Spot *spot);
+    static bool handle_init_packet(packet_device_spot_t *rcv_packet, Spot *spot);
 };
 
 

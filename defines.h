@@ -14,9 +14,9 @@
 #define RADIO_DEVICE_DRIVER_PATH "/dev/radio_device"
 
 ///defines for SPOT - MASTER connection
-#define PORT 3458
+#define PORT 3459
 #define CLOSE_CONNECTION_SYMBOL '#'
 #define BUFF_SIZE 256
-#define SERVER_IP "192.168.20.136"
+#define SERVER_IP "192.168.20.115"
 
 #endif //SPOT_CPP_DEFINES_H

@@ -49,78 +49,6 @@ packet_device_spot_t *Spot::get_answer_from_queue(packet_device_spot_t *rcv_pack
     return nullptr;
 }
 
-///**
-// * Функция обрабатывает запрос в рамках открытого сеанса, кладет в очередь пакет-ответ для узла
-// * @param spotDeviceInfo структура с данными спота и очередями готовых пакетов для узлов
-// * @param rcv_packet адрес полученного пакета запроса
-// * @return всегда возвращает 0, проверок никаких здесь не проводится
-// */
-//
-//bool Spot::handle_rx_packet(packet_device_spot_t *rcv_packet)
-//{
-//    packet_device_spot_t	*packet_to_update;
-//    device_info	*device = nullptr;
-//    uint8_t		i = 0;
-//
-//    while (i < MAX_SLAVES_COUNT && this->slaves[i].address)
-//    {
-//        if (this->slaves[i].address == rcv_packet->address)
-//        {
-//            device = &this->slaves[i];
-//            break;
-//        }
-//        i++;
-//    }
-//    if (device)
-//    {
-//        packet_to_update = &(device->queue[rcv_packet->counter].packet);
-//        packet_to_update->counter = rcv_packet->counter;
-//        packet_to_update->address = rcv_packet->address;
-//        packet_to_update->length = sizeof(packet_device_spot_t) - 1;
-//        packet_to_update->info = rcv_packet->info;
-//        // для исходящего пакета контрольная сумма инвертирована
-//        packet_to_update->crc = 0;
-//        packet_to_update->crc = ~(dallasCrc16((uint8_t *) packet_to_update, (packet_to_update->length - 1)));
-//    }
-//    return (false);
-//}
-
-/**
- * Функция обрабатывает инициализационный запрос (начало сеанса), кладет в очередь пакет-ответ для узла
- * @param spotDeviceInfo структура с данными спота и очередями готовых пакетов для узлов
- * @param rcv_packet адрес полученного пакета запроса
- * @return всегда возвращает 0, проверок никаких здесь не проводится
- */
-
-bool Spot::handle_init_packet(packet_device_spot_t *rcv_packet)
-{
-    packet_device_spot_t	*packet_to_update;
-    device_info	*device = nullptr;
-    uint8_t		i = 0;
-    uint32_t	counter;
-
-    while (i < MAX_SLAVES_COUNT && \
-        this->slaves[i].address && \
-		this->slaves[i].address != rcv_packet->address)
-        i++;
-    if (i < MAX_SLAVES_COUNT)
-    {
-        device = &this->slaves[i];
-        device->address = rcv_packet->address;
-        counter = RANDOM_COUNTER;
-        device->counter = counter;
-        packet_to_update = &(device->queue[counter % 3].packet);
-        packet_to_update->counter = rcv_packet->counter;
-        packet_to_update->address = rcv_packet->address;
-        packet_to_update->length = sizeof(packet_device_spot_t) - 1;
-        packet_to_update->info = counter;
-        packet_to_update->crc = 0;
-        // для исходящего пакета контрольная сумма инвертирована
-        packet_to_update->crc = ~(dallasCrc16((uint8_t *) packet_to_update, (packet_to_update->length - 1)));
-    }
-    return (false);
-}
-
 
 /**
  * Функция обрабатывает полученный запрос и подготавливает на него ответ, если запрос валидный
@@ -136,7 +64,7 @@ bool Spot::prepare_answer_spot_node(uint8_t *byte_arr_master_node, packet_device
 
    Packet::read_packet_master_node(&rcv_packet, byte_arr_master_node);
     if (rcv_packet.counter == DEFAULT_COUNTER)
-        handle_init_packet(&rcv_packet);
+        Packet::handle_init_packet(&rcv_packet, this);
     else
         Packet::handle_rx_packet(&rcv_packet, this);
     return false;

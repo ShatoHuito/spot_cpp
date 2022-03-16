@@ -28,10 +28,6 @@ public:
     void start_message_exchande();
     packet_device_spot_t *get_answer_from_queue(packet_device_spot_t *rcv_packet);
     bool prepare_answer_spot_node(uint8_t *byte_arr_master_node, packet_device_spot_t *packet_tx);
-    bool handle_rx_packet(packet_device_spot_t *rcv_packet);
-    bool handle_init_packet(packet_device_spot_t *rcv_packet);
-
-
 
 private:
     uint16_t    address;
